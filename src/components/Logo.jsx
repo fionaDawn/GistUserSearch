@@ -6,8 +6,7 @@ const useStyles = makeStyles((theme) => ({
     logos: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        marginBottom: "2rem"
+        alignItems: "center"
     }
 }));
 

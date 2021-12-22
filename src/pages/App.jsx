@@ -1,6 +1,9 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import React from 'react';
-import UserSearch from '../components/UserSearch';
+import { BrowserRouter } from "react-router-dom";
+import Router from '../Router';
+
+
 
 function App() {
   const myTheme = createTheme({
@@ -11,7 +14,9 @@ function App() {
   });
 
   return <ThemeProvider theme={myTheme}>
-    <UserSearch />
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   </ThemeProvider>
 
 }
