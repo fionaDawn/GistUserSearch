@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getGistsByUsername } from '../service/gist';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
+import { getAllForksByGistId, getGistsByUsername } from '../service/gist';
 
 const initialState = {
     status: "idle",
@@ -15,6 +15,11 @@ const initialState = {
 export const getUserGistsAsync = createAsyncThunk(
     'user/getGistsByUsername',
     async (uname) => await getGistsByUsername(uname)
+);
+
+export const getAllForksByGistIdAsync = createAsyncThunk(
+    'user/getAllForksByGistId',
+    async (id) => await getAllForksByGistId(id)
 );
 
 export const userSlice = createSlice({
@@ -35,6 +40,10 @@ export const userSlice = createSlice({
             .addCase(getUserGistsAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.results = action.payload;
+            })
+            .addCase(getAllForksByGistIdAsync.fulfilled, (state, action) => {
+                const payloadIdx = current(state).results.findIndex(res => res.id === action.meta.arg)
+                state.results[payloadIdx].forks = action.payload
             });
     },
 });
@@ -45,14 +54,5 @@ export const userSlice = createSlice({
 export const selectUser = (state) => {
     return state.user;
 }
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-// export const incrementIfOdd = (amount) => (dispatch, getState) => {
-//     const currentValue = selectUser(getState());
-//     if (currentValue % 2 === 1) {
-//         dispatch(incrementByAmount(amount));
-//     }
-// };
 
 export default userSlice.reducer;

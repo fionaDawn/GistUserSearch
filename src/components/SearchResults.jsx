@@ -1,11 +1,12 @@
 import React from 'react';
+import Gist from './Gist';
 
 function SearchResults({ results }) {
 
     return (
-        <div>
+        <div style={{ width: "90%" }}>
             {results.length > 0 ?
-                results.map(gist => <div key={gist.node_id}>{gist.url}</div>)
+                results.map(gist => <Gist key={gist.id} gist={gist} />)
                 : "No Record FOund!"
             }
         </div>
