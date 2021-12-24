@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBar() {
+const SearchBar = ({ defaultText }) => {
     const navigate = useNavigate();
 
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState(defaultText || "");
 
     const handleChange = () => (event) => {
         setSearchText(event.target.value);
@@ -21,14 +21,14 @@ function SearchBar() {
             });
         }
     }
-    console.log(searchText)
     return <Paper
         component="form"
         action="/search"
         onSubmit={handleSearch}
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400, marginTop: "4rem" }}
+        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
     >
         <InputBase
+            data-testid="search-input"
             sx={{ ml: 1, flex: 1 }}
             placeholder="Search Github Username"
             inputProps={{

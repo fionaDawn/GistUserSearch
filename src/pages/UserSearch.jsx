@@ -8,16 +8,17 @@ const useStyles = makeStyles((theme) => ({
     // Styling material components
     root: {
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         backgroundColor: blueGrey[800],
-        [theme.breakpoints.down("xs")]: {
-            paddingTop: theme.spacing(2),
-        },
         justifyContent: "center",
         alignItems: "center"
     },
+    logo: {
+        marginBottom: "4rem"
+    }
 }));
 
 const UserSearch = () => {
@@ -26,7 +27,9 @@ const UserSearch = () => {
 
     return (
         <div className={classes.root}>
-            <Logo height={72} />
+            <div className={classes.logo}>
+                <Logo height={72} />
+            </div>
             <SearchBar />
         </div >
     )

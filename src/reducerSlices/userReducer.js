@@ -14,12 +14,12 @@ const initialState = {
 // typically used to make async requests.
 export const getUserGistsAsync = createAsyncThunk(
     'user/getGistsByUsername',
-    async (uname) => await getGistsByUsername(uname)
+    async (uname) => (await getGistsByUsername(uname)).data
 );
 
 export const getAllForksByGistIdAsync = createAsyncThunk(
     'user/getAllForksByGistId',
-    async (id) => await getAllForksByGistId(id)
+    async (id) => (await getAllForksByGistId(id)).data
 );
 
 export const userSlice = createSlice({
@@ -43,7 +43,17 @@ export const userSlice = createSlice({
             })
             .addCase(getAllForksByGistIdAsync.fulfilled, (state, action) => {
                 const payloadIdx = current(state).results.findIndex(res => res.id === action.meta.arg)
-                state.results[payloadIdx].forks = action.payload
+                // get only the latest 3 forks
+                const sortedForks = action.payload.sort((a, b) => {
+                    var keyA = new Date(a.created_at),
+                        keyB = new Date(b.created_at);
+                    // Compare the 2 dates
+                    if (keyA < keyB) return 1;
+                    if (keyA > keyB) return -1;
+                    return 0;
+                });
+                console.log(sortedForks.slice(0, 2), sortedForks)
+                state.results[payloadIdx].forks = sortedForks.slice(0, 3)
             });
     },
 });

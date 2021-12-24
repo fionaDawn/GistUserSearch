@@ -1,18 +1,21 @@
 import { makeStyles } from '@mui/styles';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     logos: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        cursor: "pointer"
     }
 }));
 
 function Logo({ height }) {
     const classes = useStyles();
-    return <div className={classes.logos}>
+    const navigate = useNavigate();
+    return <div data-testid="logo" className={classes.logos} onClick={() => navigate("/")}>
         <img src="/GitHub_Logo_White.png" alt="GitHub Logo" height={height} />
         <img src="/Gist.png" alt="Gist Logo" height={height - 16} />
     </div>

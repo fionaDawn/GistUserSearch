@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
     // Styling material components
     root: {
         width: "100%",
-        height: "100vh",
+        height: "100%",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         backgroundColor: blueGrey[800],
@@ -25,12 +26,15 @@ const useStyles = makeStyles((theme) => ({
     searchBar: {
         display: "flex",
         justifyContent: "space-between",
-        width: "90%"
+        width: "90%",
+        alignItems: "center",
+        marginTop: "2rem"
     }
 }));
 
 const UserSearchResult = () => {
     const query = useQuery();
+    const searchText = query.get("searchText");
 
     const classes = useStyles();
     const user = useSelector(selectUser);
@@ -38,7 +42,7 @@ const UserSearchResult = () => {
     const [gistList, setGistList] = useState([]);
 
     const getUsers = () => {
-        dispatch(getUserGistsAsync(query.get("searchText")))
+        dispatch(getUserGistsAsync(searchText))
     }
 
     useEffect(() => {
@@ -50,15 +54,12 @@ const UserSearchResult = () => {
         setGistList(user.results)
     }, [user])
 
-    console.log(user)
-    if (user.status !== "idle") return <div>{user.status}</div>
-
     return <div className={classes.root}>
         <div className={classes.searchBar}>
-            <SearchBar />
             <Logo height={52} />
+            <SearchBar defaultText={searchText} />
         </div>
-        <SearchResults results={gistList} />
+        <SearchResults user={user} results={gistList} />
     </div>
 }
 
